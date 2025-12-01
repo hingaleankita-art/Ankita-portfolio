@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HotelEase — Find Your Perfect Stay</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    :root{
+      --primary:#0d47a1;
+      --accent:#ffd600;
+      --bg:#f2f6fc;
+      --card:#ffffff;
+      --muted:#6b7280;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Poppins',sans-serif;
+      background:var(--bg);
+      color:#0f1724;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+    }
+    a{color:inherit;text-decoration:none}
+
+    /* NAVBAR */
+    .navbar{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0.85rem 2rem;
+      background: linear-gradient(180deg, rgba(13,71,161,0.95), rgba(13,71,161,0.85));
+      color:#fff;
+      gap:1rem;
+      box-shadow:0 8px 20px rgba(13,71,161,0.08);
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      font-weight:700;
+      font-size:1.2rem;
+      letter-spacing:0.2px;
+    }
+    .logo .mark{
+      background:var(--accent);
+      color:var(--primary);
+      padding:.36rem .5rem;
+      border-radius:8px;
+      font-weight:800;
+    }
+    nav a{
+      margin-left:1.25rem;
+      color:#fff;
+      font-weight:600;
+      opacity:.95;
+      transition:all .2s;
+    }
+    nav a:hover{opacity:1; transform:translateY(-3px); color:#ffeb99}
+
+    /* HERO */
+    .hero{
+      position:relative;
+      min-height:420px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:3.5rem 1rem;
+      background-image:
+        linear-gradient(rgba(3,37,76,0.55), rgba(3,37,76,0.25)),
+        url('https://i.pinimg.com/originals/a3/59/4b/a3594b50b45fabac3c8469c86fc9c04a.jpg');
+      background-size:cover;
+      background-position:center;
+      color:#fff;
+    }
+    .hero .wrap{
+      max-width:1100px;
+      width:100%;
+      padding:1.5rem;
+      position:relative;
+      z-index:2;
+    }
+    .hero h1{
+      font-family:'Playfair Display',serif;
+      font-size:2.4rem;
+      margin-bottom:.5rem;
+      letter-spacing:0.4px;
+    }
+    .hero p{margin:0 auto 1.2rem; max-width:760px; color:rgba(255,255,255,0.92)}
+
+    /* Floating Search Card */
+    .search-card{
+      margin-top:1rem;
+      display:flex;
+      gap:.75rem;
+      background: rgba(255,255,255,0.95);
+      padding:.75rem;
+      border-radius:14px;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 10px 30px rgba(2,6,23,0.2);
+      transform:translateY(20px);
+      flex-wrap:wrap;
+    }
+    .search-card .field{
+      display:flex;
+      gap:.5rem;
+      align-items:center;
+    }
+    .search-card input[type="date"],
+    .search-card select,
+    .search-card input[type="number"]{
+      border:0;
+      padding:.55rem .65rem;
+      border-radius:8px;
+      min-width:150px;
+      outline: none;
+      background:#f6f9ff;
+      font-weight:600;
+    }
+    .search-card button{
+      background:var(--accent);
+      border:0;
+      padding:.6rem 1rem;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      color:var(--primary);
+      transition:all .2s;
+    }
+    .search-card button:hover{transform:translateY(-3px)}
+
+    /* MAIN LAYOUT */
+    .container{
+      max-width:1200px;
+      margin:3rem auto;
+      padding:0 1.2rem;
+    }
+
+    /* SECTION HEADINGS */
+    .section{
+      margin-bottom:2.8rem;
+    }
+    .section .heading{
+      display:flex;
+      align-items:center;
+      gap:.8rem;
+      margin-bottom:1rem;
+    }
+    .section h2{
+      margin:0;
+      color:var(--primary);
+      font-size:1.6rem;
+    }
+    .section p.lead{color:var(--muted); margin:0; font-size:0.95rem}
+
+    /* ABOUT */
+    .about{
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:1.5rem;
+      align-items:center;
+      margin-top:0.5rem;
+    }
+    .about .about-text h3{font-size:1.25rem; margin-bottom:.6rem}
+    .about .about-text p{color:var(--muted)}
+    .about .about-image{
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow: 0 12px 30px rgba(2,6,23,0.08);
+      height:100%;
+      min-height:260px;
+    }
+    .about .about-image img{width:100%; display:block; height:100%; object-fit:cover}
+
+    /* AMENITIES */
+    .amenities-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap:1rem;
+      margin-top:1rem;
+    }
+    .amenity{
+      display:flex;
+      gap:.9rem;
+      align-items:flex-start;
+      background:var(--card);
+      padding:1rem;
+      border-radius:10px;
+      box-shadow:0 8px 20px rgba(2,6,23,0.05);
+    }
+    .amenity i{
+      background:linear-gradient(180deg,var(--accent), #ffd27a);
+      padding:.7rem;
+      border-radius:10px;
+      color:var(--primary);
+      font-size:1.1rem;
+      min-width:46px;
+      text-align:center;
+    }
+    .amenity h4{margin:0; font-size:1rem}
+    .amenity p{margin:0; color:var(--muted); font-size:.9rem}
+
+    /* Popular Destinations */
+    .destinations{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap:1rem;
+    }
+    .dest-card{
+      position:relative;
+      border-radius:12px;
+      overflow:hidden;
+      min-height:160px;
+      box-shadow:0 12px 30px rgba(2,6,23,0.06);
+    }
+    .dest-card img{width:100%;height:100%;object-fit:cover;display:block; filter:brightness(.75)}
+    .dest-card .meta{
+      position:absolute;
+      left:12px; bottom:12px; color:#fff;
+      font-weight:700; text-shadow:0 4px 18px rgba(0,0,0,0.5)
+    }
+
+    /* ROOMS */
+    .room-container{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap:1rem;
+      margin-top:1rem;
+    }
+    .room-card{
+      background:var(--card);
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow:0 12px 30px rgba(2,6,23,0.06);
+      transition:transform .24s, box-shadow .24s;
+    }
+    .room-card:hover{transform:translateY(-8px); box-shadow:0 22px 46px rgba(2,6,23,0.1)}
+    .room-card img{width:100%;height:160px; object-fit:cover; display:block}
+    .room-info{padding:1rem; display:flex; justify-content:space-between; align-items:center; gap:.6rem}
+    .room-info h3{margin:0; font-size:1rem; color:var(--primary)}
+    .room-info .price{font-weight:700; color:var(--muted)}
+    .room-info button{background:var(--primary); color:#fff; border:0; padding:.55rem .8rem; border-radius:8px; cursor:pointer}
+
+    /* Testimonials slider */
+    .testimonials{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(13,71,161,0.04), rgba(13,71,161,0.01));
+      padding:1rem;
+      border-radius:12px;
+    }
+    .test-track{
+      display:flex;
+      gap:1rem;
+      transition:transform .45s cubic-bezier(.2,.9,.2,1);
+      will-change:transform;
+      padding-bottom:8px;
+    }
+    .test-card{
+      min-width:260px;
+      flex:0 0 320px;
+      background:var(--card);
+      border-radius:10px;
+      padding:1rem;
+      box-shadow:0 8px 20px rgba(2,6,23,0.06);
+      display:flex;
+      gap:.8rem;
+      align-items:flex-start;
+    }
+    .test-card img{width:64px;height:64px;border-radius:8px;object-fit:cover}
+    .test-card strong{display:block}
+    .test-card p{color:var(--muted); margin:6px 0 0; font-size:.95rem}
+    .test-nav{display:flex; gap:.5rem; justify-content:center; margin-top:.7rem}
+    .test-nav button{background:#fff; border:1px solid #e6eefc; padding:.45rem .6rem; border-radius:8px; cursor:pointer}
+
+    /* Gallery masonry */
+    .gallery-grid{
+      column-count:3;
+      column-gap:1rem;
+      margin-top:1rem;
+    }
+    .gallery-item{
+      break-inside: avoid;
+      margin-bottom:1rem;
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(2,6,23,0.06);
+      cursor:pointer;
+    }
+    .gallery-item img{width:100%; height:auto; display:block}
+
+    /* Why Choose Us */
+    .compare{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap:1rem;
+      margin-top:1rem;
+    }
+    .compare .box{
+      background:var(--card);
+      padding:1rem;
+      border-radius:10px;
+      box-shadow:0 8px 20px rgba(2,6,23,0.06);
+    }
+    .compare .box h4{margin-top:0; color:var(--primary)}
+
+    /* FOOTER */
+    footer{
+      background:#071233;
+      color:#cbd5e1;
+      padding:2rem 1rem;
+      margin-top:2.5rem;
+    }
+    .footer-grid{
+      max-width:1200px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:1rem;
+      padding:0 1rem;
+    }
+    .footer-grid h4{color:#fff}
+    .social a{margin-right:.5rem; color:#fff}
+    .small{color:#93a3bd; font-size:0.9rem; margin-top:1rem}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .about{grid-template-columns:1fr}
+      .gallery-grid{column-count:2}
+      .footer-grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width:600px){
+      .search-card{flex-direction:column; gap:.6rem}
+      .gallery-grid{column-count:1}
+      nav a{display:none}
+      .hero h1{font-size:1.6rem}
+      .navbar{padding:.6rem 1rem}
+      .room-card img{height:150px}
+      .room-info{flex-direction:column; align-items:flex-start; gap:.6rem}
+    }
+
+    /* Modal for gallery */
+    .modal{
+      position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+      background:rgba(2,6,23,0.6); z-index:2000;
+    }
+    .modal.active{display:flex}
+    .modal .inner{max-width:900px; width:92%; background:#fff; padding:1rem; border-radius:12px}
+    .modal img{width:100%;height:auto; display:block}
+    .modal .close{background:var(--primary); color:#fff; padding:.5rem .7rem; border-radius:8px; border:0; cursor:pointer; margin-top:.6rem}
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo"><span class="mark">HE</span> HotelEase</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#rooms">Rooms</a>
+      <a href="#amenities">Amenities</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home" aria-label="Hero">
+    <div class="wrap">
+      <h1>Find Your Perfect Stay</h1>
+      <p>Search, book, and enjoy comfort with ease — premium rooms, great amenities and excellent service.</p>
+
+      <div class="search-card" role="search" aria-label="Booking search">
+        <div class="field">
+          <input type="date" id="checkin" />
+        </div>
+        <div class="field">
+          <input type="date" id="checkout" />
+        </div>
+        <div class="field">
+          <select id="roomType">
+            <option value="">Room Type</option>
+            <option>Single</option>
+            <option>Double</option>
+            <option>Suite</option>
+          </select>
+        </div>
+        <div class="field">
+          <input type="number" id="guests" min="1" max="10" placeholder="Guests" />
+        </div>
+        <button id="searchBtn">Search</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+
+    <!-- ABOUT -->
+    <section class="section about" id="about">
+      <div class="about-text">
+        <div class="heading"><h2>About Us</h2></div>
+        <h3>Comfort, convenience and memorable stays</h3>
+        <p class="lead">HotelEase is dedicated to providing comfortable stays with thoughtful amenities and friendly service. Whether you're traveling for business or leisure, we ensure clean rooms, fast Wi-Fi and a warm welcome. Our prime location makes it easy to explore nearby attractions and enjoy local experiences.</p>
+        <p style="margin-top:.6rem;color:var(--muted)">We value cleanliness, sustainability and community — book with confidence and enjoy exclusive perks for direct bookings.</p>
+      </div>
+
+      <div class="about-image">
+        <!-- working Unsplash image -->
+        <img src="https://i.pinimg.com/originals/a3/59/4b/a3594b50b45fabac3c8469c86fc9c04a.jpg" alt="About hotel image" />
+      </div>
+    </section>
+
+    <!-- AMENITIES -->
+    <section class="section" id="amenities" aria-label="Amenities">
+      <div class="heading">
+        <h2>Amenities</h2>
+        <p class="lead" style="margin-left:auto">Everything you need for a perfect stay.</p>
+      </div>
+
+      <div class="amenities-grid">
+        <div class="amenity">
+          <i class="fa-solid fa-wifi"></i>
+          <div>
+            <h4>Free WiFi</h4>
+            <p>High-speed internet in rooms and public areas.</p>
+          </div>
+        </div>
+
+        <div class="amenity">
+          <i class="fa-solid fa-water-ladder"></i>
+          <div>
+            <h4>Swimming Pool</h4>
+            <p>Outdoor pool with sun loungers and poolside drinks.</p>
+          </div>
+        </div>
+
+        <div class="amenity">
+          <i class="fa-solid fa-car"></i>
+          <div>
+            <h4>Free Parking</h4>
+            <p>Secure on-site parking for guests.</p>
+          </div>
+        </div>
+
+        <div class="amenity">
+          <i class="fa-solid fa-utensils"></i>
+          <div>
+            <h4>Restaurant</h4>
+            <p>Local and international cuisine prepared fresh.</p>
+          </div>
+        </div>
+
+        <div class="amenity">
+          <i class="fa-solid fa-dumbbell"></i>
+          <div>
+            <h4>Fitness Center</h4>
+            <p>Well-equipped gym to keep up your routine.</p>
+          </div>
+        </div>
+
+        <div class="amenity">
+          <i class="fa-solid fa-shield-halved"></i>
+          <div>
+            <h4>24/7 Security</h4>
+            <p>Round-the-clock security for peace of mind.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Popular Destinations -->
+    <section class="section" id="destinations">
+      <div class="heading"><h2>Popular Nearby</h2><p class="lead" style="margin-left:auto">Explore places guests love</p></div>
+
+      <div class="destinations">
+        <div class="dest-card">
+          <img src="https://www.tripsavvy.com/thmb/WmQqKtZ_q2c015dBHFJhrUCYNo4=/3645x2430/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-498997676-5b9e338f46e0fb0024728b7c.jpg" alt="Old Fort">
+          <div class="meta">Old Fort</div>
+        </div>
+        <div class="dest-card">
+          <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1400&auto=format&fit=crop" alt="City Museum">
+          <div class="meta">City Museum</div>
+        </div>
+        <div class="dest-card">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1400&auto=format&fit=crop" alt="Riverfront">
+          <div class="meta">Riverfront</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROOMS -->
+    <section class="section" id="rooms">
+      <div class="heading"><h2>Available Rooms</h2><p class="lead" style="margin-left:auto">Choose a room that fits your stay</p></div>
+
+      <div class="room-container" id="roomContainer">
+        <!-- room cards populated by JS -->
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section">
+      <div class="heading"><h2>Testimonials</h2><p class="lead" style="margin-left:auto">What our guests say</p></div>
+
+      <div class="testimonials">
+        <div class="test-track" id="testTrack" aria-live="polite">
+          <!-- testimonial cards inserted by JS -->
+        </div>
+
+        <div class="test-nav" id="testNav">
+          <!-- nav buttons inserted by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="section" id="gallery">
+      <div class="heading"><h2>Gallery</h2><p class="lead" style="margin-left:auto">Browse moments from the hotel</p></div>
+
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- gallery items inserted by JS -->
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="section">
+      <div class="heading"><h2>Why Choose Us</h2><p class="lead" style="margin-left:auto">Small details, big comfort</p></div>
+
+      <div class="compare">
+        <div class="box">
+          <h4>Best Location</h4>
+          <p class="lead" style="color:var(--muted)">Close to transport and tourist spots, saving you time.</p>
+        </div>
+        <div class="box">
+          <h4>Transparent Pricing</h4>
+          <p class="lead" style="color:var(--muted)">No hidden fees — what you see is what you pay.</p>
+        </div>
+        <div class="box">
+          <h4>Trusted Cleanliness</h4>
+          <p class="lead" style="color:var(--muted)">Rigorous cleaning and safety protocols.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="footer-grid">
+      <div>
+        <h4>HotelEase</h4>
+        <p class="small">Comfortable stays, thoughtful service. Your perfect stay awaits.</p>
+        <p style="margin-top:1rem"><strong>Address:</strong> 123 Main Road, City</p>
+      </div>
+
+      <div>
+        <h4>Quick Links</h4>
+        <ul style="list-style:none;padding-left:0;margin-top:.6rem;color:var(--muted)">
+          <li><a href="#rooms">Rooms</a></li>
+          <li><a href="#amenities">Amenities</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contact</h4>
+        <p style="margin:.3rem 0"><strong>Phone:</strong> +91 98765 43210</p>
+        <p style="margin:.3rem 0"><strong>Email:</strong> hello@hotelease.example</p>
+
+        <div class="social" style="margin-top:.6rem">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:1200px;margin:1.25rem auto 0;padding:0 1rem">
+      <small style="color:#93a3bd">© <span id="year"></span> HotelEase. All rights reserved.</small>
+    </div>
+  </footer>
+
+  <!-- Modal for gallery images -->
+  <div class="modal" id="modal" role="dialog" aria-hidden="true">
+    <div class="inner" role="document">
+      <img id="modalImg" alt="Gallery large" />
+      <button class="close" id="modalClose">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Data with working Unsplash images
+    const rooms = [
+      { name: "Single Room", price: "₹1200/night", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1400&auto=format&fit=crop", type: "Single" },
+      { name: "Double Room", price: "₹2000/night", img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1400&auto=format&fit=crop", type: "Double" },
+      { name: "Suite Room", price: "₹3500/night", img: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1400&auto=format&fit=crop", type: "Suite" },
+      { name: "Deluxe Double", price: "₹2800/night", img: "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?cs=srgb&dl=pexels-pixabay-164595.jpg&fm=jpg", type: "Double" }
+    ];
+
+    const testimonials = [
+      {name:"Anita S.", text:"Lovely stay! Clean rooms and helpful staff — we loved the breakfast.", avatar:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"},
+      {name:"Rahul P.", text:"Great value for money. Pool and location were perfect for our family trip.", avatar:"https://4.bp.blogspot.com/-X_f93zo7qc8/VEAKZDxa34I/AAAAAAAAAH8/rkI1dncmg7E/s1600/RG-01.jpg"},
+      {name:"Meera K.", text:"Comfortable beds, seamless check-in and friendly service.", avatar:"https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?q=80&w=400&auto=format&fit=crop"},
+      {name:"David H.", text:"Well-maintained hotel with easy access to nearby attractions.", avatar:"https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg?w=2000"}
+    ];
+
+    const gallery = [
+      "https://static.vecteezy.com/system/resources/previews/031/340/372/non_2x/beautiful-outdoor-swimming-pool-in-luxury-hotel-resort-with-blue-sky-for-leisure-relax-and-holiday-concept-by-ai-generated-free-photo.jpg",
+      "https://i.pinimg.com/originals/a3/59/4b/a3594b50b45fabac3c8469c86fc9c04a.jpg",
+      "https://www.le-blog-de-mathis.fr/wp-content/uploads/2020/04/pexels-photo-2034335.jpeg",
+      "https://cdn.pixabay.com/photo/2023/03/29/10/27/hotel-7885138_1280.jpg",
+      "https://wallpaperaccess.com/full/2690612.jpg",
+      "https://wallpapers.com/images/hd/hotel-background-t1v4131796l6fonn.jpg"
+    ];
+
+    // Render rooms
+    const roomContainer = document.getElementById('roomContainer');
+    function renderRooms(list){
+      roomContainer.innerHTML = '';
+      list.forEach(room=>{
+        const card = document.createElement('div');
+        card.className = 'room-card';
+        card.innerHTML = `
+          <img src="${room.img}" alt="${room.name}" loading="lazy">
+          <div class="room-info">
+            <div>
+              <h3>${room.name}</h3>
+              <div class="price">${room.price}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:.5rem;align-items:flex-end">
+              <button onclick="bookNow('${room.name}')">Book</button>
+            </div>
+          </div>
+        `;
+        roomContainer.appendChild(card);
+      });
+    }
+    renderRooms(rooms);
+
+    // Book function (demo)
+    function bookNow(roomName){
+      alert('Booking started for: ' + roomName);
+    }
+
+    // Testimonials render + slider
+    const testTrack = document.getElementById('testTrack');
+    const testNav = document.getElementById('testNav');
+    testimonials.forEach((t,i)=>{
+      const el = document.createElement('div');
+      el.className = 'test-card';
+      el.innerHTML = `<img src="${t.avatar}" alt="${t.name}"><div><strong>${t.name}</strong><p>${t.text}</p></div>`;
+      testTrack.appendChild(el);
+
+      const btn = document.createElement('button');
+      btn.textContent = i+1;
+      btn.addEventListener('click', ()=> { goToTest(i); });
+      testNav.appendChild(btn);
+    });
+
+    let currentTest = 0;
+    function goToTest(i){
+      const cardWidth = 340; // approximate width including gap
+      currentTest = i;
+      testTrack.style.transform = `translateX(-${i * cardWidth}px)`;
+    }
+    // auto rotate
+    let testInterval = setInterval(()=> {
+      currentTest = (currentTest + 1) % testimonials.length;
+      goToTest(currentTest);
+    }, 4000);
+
+    // Pause rotation on hover
+    document.querySelector('.testimonials').addEventListener('mouseenter', ()=> clearInterval(testInterval));
+    document.querySelector('.testimonials').addEventListener('mouseleave', ()=> {
+      testInterval = setInterval(()=> {
+        currentTest = (currentTest + 1) % testimonials.length;
+        goToTest(currentTest);
+      }, 4000);
+    });
+
+    // Gallery render + modal
+    const galleryGrid = document.getElementById('galleryGrid');
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalClose = document.getElementById('modalClose');
+
+    gallery.forEach((src,idx)=>{
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.innerHTML = `<img src="${src}" alt="gallery-${idx}" loading="lazy">`;
+      item.addEventListener('click', ()=> openModal(src));
+      galleryGrid.appendChild(item);
+    });
+
+    function openModal(src){
+      modalImg.src = src;
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden','false');
+    }
+    modalClose.addEventListener('click', ()=> {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden','true');
+    });
+    modal.addEventListener('click', (e)=> {
+      if(e.target === modal) {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden','true');
+      }
+    });
+
+    // Simple search (filter by room type demo)
+    document.getElementById('searchBtn').addEventListener('click', ()=>{
+      const type = document.getElementById('roomType').value.trim();
+      const checkin = document.getElementById('checkin').value;
+      const checkout = document.getElementById('checkout').value;
+      if(checkin && checkout && new Date(checkin) >= new Date(checkout)){
+        alert('Check-out must be after check-in.');
+        return;
+      }
+      const filtered = type ? rooms.filter(r => r.type.toLowerCase() === type.toLowerCase()) : rooms;
+      renderRooms(filtered);
+      // scroll to rooms for better UX
+      document.getElementById('rooms').scrollIntoView({behavior:'smooth'});
+    });
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // keyboard escape to close modal
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden','true');
+      }
+    });
+  </script>
+  <script>
+// ---------- ROOM DATA ----------
+const rooms = [
+  {
+    name: "Single Room",
+    price: "₹1200 / night",
+    img: "https://images.unsplash.com/photo-1501183638710-841dd1904471?auto=format&fit=crop&w=800&q=60"
+  },
+  {
+    name: "Double Room",
+    price: "₹1800 / night",
+    img: "https://images.unsplash.com/photo-1564078516393-cf04bd966897?auto=format&fit=crop&w=800&q=60"
+  },
+  {
+    name: "Luxury Suite",
+    price: "₹3500 / night",
+    img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=60"
+  }
+];
+
+// ---------- POPULATE ROOMS ----------
+const roomContainer = document.getElementById("roomContainer");
+rooms.forEach(r => {
+  const card = document.createElement("div");
+  card.className = "room-card";
+  card.innerHTML = `
+    <img src="${r.img}" />
+    <div class="room-info">
+      <div>
+        <h3>${r.name}</h3>
+        <span class="price">${r.price}</span>
+      </div>
+      <button>Book</button>
+    </div>`;
+  roomContainer.appendChild(card);
+});
+
+
+// ---------- TESTIMONIAL DATA ----------
+const testimonials = [
+  {
+    img: "https://randomuser.me/api/portraits/women/44.jpg",
+    name: "Aditi Sharma",
+    text: "Amazing rooms and super clean. Loved the experience!"
+  },
+  {
+    img: "https://randomuser.me/api/portraits/men/46.jpg",
+    name: "Rohan Mehta",
+    text: "Perfect stay with great amenities. Highly recommended."
+  },
+  {
+    img: "https://randomuser.me/api/portraits/women/65.jpg",
+    name: "Neha Patil",
+    text: "Staff is very friendly. Will visit again!"
+  }
+];
+
+const testTrack = document.getElementById("testTrack");
+const testNav = document.getElementById("testNav");
+
+let currentSlide = 0;
+
+// Create testimonial cards
+testimonials.forEach((t, index) => {
+  const card = document.createElement("div");
+  card.className = "test-card";
+  card.innerHTML = `
+      <img src="${t.img}" />
+      <div>
+        <strong>${t.name}</strong>
+        <p>${t.text}</p>
+      </div>`;
+  
+  testTrack.appendChild(card);
+
+  // Create navigation dots
+  const btn = document.createElement("button");
+  btn.addEventListener("click", () => moveToSlide(index));
+  testNav.appendChild(btn);
+});
+
+function moveToSlide(i) {
+  currentSlide = i;
+  testTrack.style.transform = `translateX(-${i * 330}px)`;
+}
+
+moveToSlide(0);
+
+
+// ---------- GALLERY ----------
+const galleryImages = [
+  "https://images.unsplash.com/photo-1501117716987-c8e1ecb2100d",
+  "https://images.unsplash.com/photo-1496417263034-38ec4f0b665a",
+  "https://images.unsplash.com/photo-1484154218962-a197022b5858",
+  "https://images.unsplash.com/photo-1493809842364-78817add7ffb",
+  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750",
+  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267"
+];
+
+const galleryGrid = document.getElementById("galleryGrid");
+
+galleryImages.forEach(src => {
+  const div = document.createElement("div");
+  div.className = "gallery-item";
+  div.innerHTML = `<img src="${src}?auto=format&fit=crop&w=800&q=60">`;
+  div.addEventListener("click", () => openModal(src));
+  galleryGrid.appendChild(div);
+});
+
+
+// ---------- MODAL ----------
+let modal;
+function openModal(src) {
+  modal = document.createElement("div");
+  modal.className = "modal active";
+  modal.innerHTML = `
+      <div class="inner">
+        <img src="${src}">
+        <button class="close">Close</button>
+      </div>`;
+  document.body.appendChild(modal);
+
+  modal.querySelector(".close").addEventListener("click", closeModal);
+}
+
+function closeModal() {
+  modal.remove();
+}
+
+
+// ---------- SEARCH BUTTON ----------
+document.getElementById("searchBtn").addEventListener("click", () => {
+  const checkin = document.getElementById("checkin").value;
+  const checkout = document.getElementById("checkout").value;
+  const type = document.getElementById("roomType").value;
+  const guests = document.getElementById("guests").value;
+
+  if (!checkin || !checkout || !type || !guests) {
+    alert("Please fill all details!");
+    return;
+  }
+
+  alert(`Searching Rooms…
+
+Check-in: ${checkin}
+Check-out: ${checkout}
+Room Type: ${type}
+Guests: ${guests}`);
+});
+</script>
+
+</body>
+</html>
